@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebVM - Virtual Cloud Desktop</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- OS Selection Screen -->
+    <div id="os-selector" class="os-selector">
+        <div class="selector-container">
+            <h1>🖥️ WebVM</h1>
+            <h2>Select Your Operating System</h2>
+            <div id="os-grid" class="os-grid">
+                <!-- OS options will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Desktop Environment -->
+    <div id="desktop" class="desktop hidden">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <div class="os-info">
+                    <span id="current-os-icon">🐧</span>
+                    <span id="current-os-name">Ubuntu Linux</span>
+                </div>
+            </div>
+            <div class="top-bar-center">
+                <div id="clock"></div>
+            </div>
+            <div class="top-bar-right">
+                <button class="top-bar-button" onclick="changeOS()">🔄 Switch OS</button>
+                <button class="top-bar-button" onclick="showAbout()">ℹ️ About</button>
+                <button class="top-bar-button logout" onclick="logout()">🚪 Logout</button>
+            </div>
+        </div>
+
+        <!-- Desktop Area -->
+        <div class="desktop-area" id="desktop-area">
+            <!-- Desktop Icons -->
+            <div class="desktop-icon" ondblclick="openWindow('terminal')">
+                <div class="icon">💻</div>
+                <div class="label">Terminal</div>
+            </div>
+            <div class="desktop-icon" ondblclick="openWindow('files')">
+                <div class="icon">📁</div>
+                <div class="label">Files</div>
+            </div>
+            <div class="desktop-icon" ondblclick="openWindow('browser')">
+                <div class="icon">🌐</div>
+                <div class="label">Browser</div>
+            </div>
+            <div class="desktop-icon" ondblclick="openWindow('settings')">
+                <div class="icon">⚙️</div>
+                <div class="label">Settings</div>
+            </div>
+            <div class="desktop-icon" ondblclick="openWindow('about')">
+                <div class="icon">ℹ️</div>
+                <div class="label">About</div>
+            </div>
+        </div>
+
+        <!-- Taskbar -->
+        <div class="taskbar">
+            <button class="app-launcher" onclick="toggleAppMenu()">
+                <span class="launcher-icon">⊞</span>
+                <span class="launcher-text">Applications</span>
+            </button>
+            <div class="taskbar-windows" id="taskbar-windows">
+                <!-- Open windows will appear here -->
+            </div>
+        </div>
+
+        <!-- Application Menu -->
+        <div id="app-menu" class="app-menu hidden">
+            <div class="app-menu-section">
+                <h3>System Tools</h3>
+                <div class="app-menu-item" onclick="openWindow('terminal')">💻 Terminal</div>
+                <div class="app-menu-item" onclick="openWindow('files')">📁 File Manager</div>
+                <div class="app-menu-item" onclick="openWindow('settings')">⚙️ Settings</div>
+            </div>
+            <div class="app-menu-section">
+                <h3>Applications</h3>
+                <div class="app-menu-item" onclick="openWindow('browser')">🌐 Web Browser</div>
+                <div class="app-menu-item" onclick="openWindow('editor')">📝 Text Editor</div>
+                <div class="app-menu-item" onclick="openWindow('calculator')">🔢 Calculator</div>
+            </div>
+            <div class="app-menu-section">
+                <h3>System</h3>
+                <div class="app-menu-item" onclick="openWindow('about')">ℹ️ About</div>
+                <div class="app-menu-item" onclick="changeOS()">🔄 Switch OS</div>
+                <div class="app-menu-item" onclick="logout()">🚪 Logout</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Window Templates -->
+    <template id="window-template">
+        <div class="window">
+            <div class="window-titlebar">
+                <span class="window-title"></span>
+                <div class="window-controls">
+                    <button class="window-button minimize" onclick="minimizeWindow(this)">_</button>
+                    <button class="window-button maximize" onclick="maximizeWindow(this)">□</button>
+                    <button class="window-button close" onclick="closeWindow(this)">×</button>
+                </div>
+            </div>
+            <div class="window-content"></div>
+        </div>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "webvm",
+  "version": "1.0.0",
+  "description": "A web-based virtual cloud desktop for multiple operating systems",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "virtual-desktop",
+    "cloud",
+    "web-desktop",
+    "operating-system"
+  ],
+  "author": "666redrum4u",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "ws": "^8.14.2"
+  }
+}

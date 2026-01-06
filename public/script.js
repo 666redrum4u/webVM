@@ -65,6 +65,9 @@ function selectOS(os) {
         case 'arch':
             desktop.style.background = 'linear-gradient(135deg, #1793D1 0%, #0A5A7A 100%)';
             break;
+        case 'kali':
+            desktop.style.background = 'linear-gradient(135deg, #267EB5 0%, #0D1117 100%)';
+            break;
         default:
             desktop.style.background = 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)';
     }

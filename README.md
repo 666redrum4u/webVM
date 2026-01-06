@@ -4,8 +4,9 @@ A web-based virtual cloud desktop for multiple operating systems. Experience dif
 
 ## ✨ Features
 
-- 🌐 **Multi-OS Support**: Choose from Ubuntu, Debian, Fedora, and Arch Linux
+- 🌐 **Multi-OS Support**: Choose from Ubuntu, Debian, Fedora, Arch, and Kali Linux
 - 💻 **Terminal Emulator**: Built-in terminal with command execution
+- 🔒 **Kali Linux Tools**: Full suite of penetration testing and security tools
 - 📁 **File Manager**: Browse and manage virtual file system
 - 🪟 **Window Management**: Full windowing system with minimize, maximize, and close
 - 🎨 **OS-Specific Themes**: Each OS comes with its own color scheme
@@ -37,7 +38,9 @@ npm install
 npm start
 ```
 
-4. Open your browser and navigate to:
+4. To stop the server, press `Ctrl+C` in the terminal where it's running
+
+5. Open your browser and navigate to:
 ```
 http://localhost:3000
 ```
@@ -88,6 +91,24 @@ webVM/
 - **Debian Linux 11**: Stable and reliable
 - **Fedora Linux 38**: Cutting-edge features
 - **Arch Linux**: Lightweight and flexible
+- **Kali Linux 2024.1**: Advanced penetration testing platform with comprehensive security tools
+
+### Kali Linux Security Tools
+
+Kali Linux comes pre-configured with all major security and penetration testing tools:
+
+- **Information Gathering**: nmap, wireshark, nikto, maltego, recon-ng
+- **Vulnerability Analysis**: openvas, nikto, sqlmap, wpscan
+- **Exploitation Tools**: metasploit, armitage, beef-xss, sqlmap
+- **Wireless Attacks**: aircrack-ng, wifite, fern-wifi-cracker, kismet
+- **Password Attacks**: john, hydra, hashcat, crunch, cewl
+- **Sniffing & Spoofing**: wireshark, ettercap, dsniff, sslstrip
+- **Post Exploitation**: powersploit, empire, mimikatz
+- **Forensics**: autopsy, binwalk, foremost, volatility
+- **Reverse Engineering**: gdb, radare2, ghidra, ida-free
+- **Social Engineering**: SET (Social-Engineer Toolkit)
+
+Type `tools` in the Kali Linux terminal to see the full list of available security tools.
 
 ## 🔌 API Endpoints
 

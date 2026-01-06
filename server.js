@@ -79,7 +79,7 @@ wss.on('connection', (ws) => {
             }
         } catch (error) {
             console.error('Error processing message:', error);
-            ws.send(JSON.stringify({ type: 'error', message: error.message }));
+            ws.send(JSON.stringify({ type: 'error', message: 'An error occurred processing your request' }));
         }
     });
     
@@ -96,7 +96,19 @@ wss.on('connection', (ws) => {
 
 // Handle terminal commands
 function handleCommand(ws, command, osType) {
-    // Simulate command execution
+    // Simulate command execution with basic input validation
+    if (!command || typeof command !== 'string') {
+        ws.send(JSON.stringify({ type: 'error', message: 'Invalid command' }));
+        return;
+    }
+    
+    // Trim and sanitize input
+    command = command.trim();
+    if (command.length > 1000) {
+        ws.send(JSON.stringify({ type: 'error', message: 'Command too long' }));
+        return;
+    }
+    
     let output = '';
     
     switch(command.trim()) {

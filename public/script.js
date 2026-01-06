@@ -91,6 +91,10 @@ function updateClock() {
 }
 
 // WebSocket connection
+let reconnectAttempts = 0;
+const MAX_RECONNECT_ATTEMPTS = 5;
+const INITIAL_RECONNECT_DELAY = 1000;
+
 function initWebSocket() {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const wsUrl = `${protocol}//${window.location.host}`;
@@ -99,6 +103,7 @@ function initWebSocket() {
     
     ws.onopen = () => {
         console.log('WebSocket connected');
+        reconnectAttempts = 0; // Reset on successful connection
     };
     
     ws.onmessage = (event) => {
@@ -116,7 +121,14 @@ function initWebSocket() {
     
     ws.onclose = () => {
         console.log('WebSocket disconnected');
-        setTimeout(initWebSocket, 3000);
+        if (reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
+            const delay = INITIAL_RECONNECT_DELAY * Math.pow(2, reconnectAttempts);
+            console.log(`Reconnecting in ${delay}ms (attempt ${reconnectAttempts + 1}/${MAX_RECONNECT_ATTEMPTS})`);
+            reconnectAttempts++;
+            setTimeout(initWebSocket, delay);
+        } else {
+            console.error('Max reconnection attempts reached');
+        }
     };
 }
 
@@ -126,10 +138,17 @@ function handleWebSocketMessage(data) {
             console.log('Server:', data.message);
             break;
         case 'output':
-            appendTerminalOutput(data.data);
+            // Find all terminal windows and append output to each
+            document.querySelectorAll('.terminal-output').forEach(output => {
+                output.textContent += '\n' + data.data;
+                output.scrollTop = output.scrollHeight;
+            });
             break;
         case 'clear':
-            clearTerminal();
+            // Clear all terminal windows
+            document.querySelectorAll('.terminal-output').forEach(output => {
+                output.textContent = 'Terminal cleared\n';
+            });
             break;
         case 'error':
             console.error('Server error:', data.message);
@@ -242,13 +261,13 @@ function openWindow(type) {
 function createTerminalContent() {
     return `
         <div class="terminal-content">
-            <div class="terminal-output" id="terminal-output">
+            <div class="terminal-output">
 Welcome to WebVM Terminal
 Type 'help' for available commands
             </div>
             <div class="terminal-input-line">
                 <span class="terminal-prompt">user@${currentOS ? currentOS.id : 'webvm'}:~$</span>
-                <input type="text" class="terminal-input" id="terminal-input" autocomplete="off">
+                <input type="text" class="terminal-input" autocomplete="off">
             </div>
         </div>
     `;
@@ -435,6 +454,17 @@ function calcButton(value) {
         if (calcOperation && calcPrevValue !== null) {
             const current = parseFloat(calcValue);
             const prev = parseFloat(calcPrevValue);
+            
+            // Handle division by zero
+            if (calcOperation === '/' && current === 0) {
+                calcValue = 'Error: Division by zero';
+                calcOperation = null;
+                calcPrevValue = null;
+                display.value = calcValue;
+                calcValue = '0';
+                return;
+            }
+            
             switch(calcOperation) {
                 case '+': calcValue = (prev + current).toString(); break;
                 case '-': calcValue = (prev - current).toString(); break;
@@ -468,7 +498,12 @@ function initializeTerminal(windowElement) {
             if (e.key === 'Enter') {
                 const command = input.value.trim();
                 if (command) {
-                    appendTerminalOutput(`\nuser@${currentOS ? currentOS.id : 'webvm'}:~$ ${command}`);
+                    // Append to this specific terminal window
+                    const output = windowElement.querySelector('.terminal-output');
+                    if (output) {
+                        output.textContent += `\nuser@${currentOS ? currentOS.id : 'webvm'}:~$ ${command}`;
+                        output.scrollTop = output.scrollHeight;
+                    }
                     
                     // Send command to server via WebSocket
                     if (ws && ws.readyState === WebSocket.OPEN) {
@@ -486,20 +521,8 @@ function initializeTerminal(windowElement) {
     }
 }
 
-function appendTerminalOutput(text) {
-    const output = document.getElementById('terminal-output');
-    if (output) {
-        output.textContent += '\n' + text;
-        output.scrollTop = output.scrollHeight;
-    }
-}
-
-function clearTerminal() {
-    const output = document.getElementById('terminal-output');
-    if (output) {
-        output.textContent = 'Terminal cleared\n';
-    }
-}
+// Note: Terminal output is now handled in handleWebSocketMessage
+// to support multiple terminal windows
 
 // Window management functions
 function addToTaskbar(windowObj, title) {

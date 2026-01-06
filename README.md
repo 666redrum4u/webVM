@@ -95,6 +95,20 @@ webVM/
 - `GET /api/os-list` - Get list of available operating systems
 - WebSocket connection for real-time terminal communication
 
+## 🔒 Security Considerations
+
+This is a demonstration project designed for educational purposes. For production use, consider implementing:
+
+- Rate limiting on all endpoints
+- Authentication and authorization
+- Session management and timeout
+- Input sanitization for actual command execution
+- HTTPS/WSS for encrypted communication
+- CSRF protection
+- Content Security Policy (CSP)
+
+**Note**: The terminal command execution is currently simulated and does not execute real system commands. This is intentional for security reasons.
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
